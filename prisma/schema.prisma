@@ -1,0 +1,109 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Role enum for user permissions
+enum Role {
+  USER
+  ADMIN
+}
+
+// Order status enum
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+// User model - for authentication and user management
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  name      String?
+  password  String     // Hashed password
+  role      Role       @default(USER)
+  avatar    String?
+  phone     String?
+  address   String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  wishlist  Wishlist[]
+  orders    Order[]
+}
+
+// Banner model - for managing carousel slides
+model Banner {
+  id        String   @id @default(cuid())
+  title     String
+  subtitle  String
+  imageUrl  String
+  linkUrl   String? // Optional link when clicked
+  order     Int      @default(0) // Display order
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Book model - comic books for sale
+model Book {
+  id           String       @id @default(cuid())
+  name         String       @unique
+  description  String
+  author       String
+  price        Float
+  coverImage   String?
+  publishedAt  DateTime
+  stock        Int          @default(0)
+  isbn         String?
+  pages        Int?
+  language     String       @default("English")
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  wishlist     Wishlist[]
+  orderItems   OrderItem[]
+}
+
+// Wishlist model - for user wishlists
+model Wishlist {
+  id        String   @id @default(cuid())
+  userId    String
+  bookId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, bookId]) // Prevent duplicate wishlist items
+}
+
+// Order model - for order management
+model Order {
+  id        String       @id @default(cuid())
+  userId    String
+  user      User         @relation(fields: [userId], references: [id])
+  status    OrderStatus  @default(PENDING)
+  total     Float
+  items     OrderItem[]
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+// Order item model - individual items in an order
+model OrderItem {
+  id       String  @id @default(cuid())
+  orderId  String
+  order    Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  bookId   String
+  book     Book    @relation(fields: [bookId], references: [id])
+  quantity Int
+  price    Float   // Price at time of order
+}
