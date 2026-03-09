@@ -1,0 +1,24 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next/standalone",
+  "installCommand": "npm install",
+  "devCommand": "npm run dev",
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "headers": {
+        "Cache-Control": "no-cache, no-store, must-revalidate"
+      }
+    }
+  ],
+  "github": {
+    "enabled": true,
+    "autoJobCancelation": true
+  },
+  "git": {
+    "deploymentEnabled": true,
+    "productionEnabled": true
+  }
+}
