@@ -5,6 +5,7 @@
   "outputDirectory": ".next/standalone",
   "installCommand": "npm install",
   "devCommand": "npm run dev",
+  "project": "purple-skull-comics-emporium",
   "routes": [
     {
       "src": "/api/(.*)",
@@ -12,13 +13,5 @@
         "Cache-Control": "no-cache, no-store, must-revalidate"
       }
     }
-  ],
-  "github": {
-    "enabled": true,
-    "autoJobCancelation": true
-  },
-  "git": {
-    "deploymentEnabled": true,
-    "productionEnabled": true
-  }
+  ]
 }
