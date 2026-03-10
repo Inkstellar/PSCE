@@ -37,7 +37,6 @@ import Autoplay from "embla-carousel-autoplay";
 import { Header } from "@/components/layout/Header";
 import { WishlistButton } from "@/components/wishlist/WishlistButton";
 import { Toaster } from "@/components/ui/toaster";
-import { AuthModal } from "@/components/admin/AuthModal";
 
 interface Book {
   id: string;
@@ -69,7 +68,6 @@ function CatalogContent() {
   const [sortBy, setSortBy] = useState("publishedAt");
   const [order, setOrder] = useState<"asc" | "desc">("desc");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [showAuthModal, setShowAuthModal] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -114,7 +112,7 @@ function CatalogContent() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Header */}
-      <Header currentPath="/catalog" onLoginClick={() => setShowAuthModal(true)} />
+      <Header currentPath="/catalog" />
 
       {/* Main Content */}
       <main className="flex-1">
@@ -511,11 +509,7 @@ function CatalogContent() {
           </div>
         </div>
       </footer>
-      <AuthModal
-        open={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-        onSuccess={() => setShowAuthModal(false)}
-      />
+      <Toaster />
       <Toaster />
     </div>
   );

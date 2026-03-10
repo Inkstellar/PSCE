@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { signIn, signOut, useSession } from "next-auth/react";
 import {
@@ -28,7 +29,6 @@ import {
 } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
 import { Header } from "@/components/layout/Header";
-import { AuthModal } from "@/components/admin/AuthModal";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { DashboardStats } from "@/components/admin/DashboardStats";
 import { BookManager } from "@/components/admin/BookManager";
@@ -58,6 +58,7 @@ interface Banner {
 }
 
 export default function Home() {
+  const router = useRouter();
   const { data: session, status } = useSession();
   const [books, setBooks] = useState<Book[]>([]);
   const [banners, setBanners] = useState<Banner[]>([]);
@@ -69,7 +70,6 @@ export default function Home() {
 
   // Admin state
   const [isAdminMode, setIsAdminMode] = useState(false);
-  const [showAuthModal, setShowAuthModal] = useState(false);
   const [adminSection, setAdminSection] = useState("dashboard");
 
   const isAdmin = session?.user?.role === "ADMIN";
@@ -105,13 +105,10 @@ export default function Home() {
     if (isAdmin) {
       setIsAdminMode(true);
     } else {
-      setShowAuthModal(true);
+      // Redirect to login page with return URL to admin
+      const returnUrl = encodeURIComponent("/?admin=true");
+      router.push(`/login?returnUrl=${returnUrl}`);
     }
-  };
-
-  const handleAuthSuccess = () => {
-    setShowAuthModal(false);
-    setIsAdminMode(true);
   };
 
   const handleExitAdmin = () => {
@@ -215,7 +212,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Header */}
-      <Header currentPath="/" onAdminClick={handleAdminClick} onLoginClick={() => setShowAuthModal(true)} />
+      <Header currentPath="/" onAdminClick={handleAdminClick} />
 
       {/* Main Content */}
       <main className="flex-1">
@@ -540,12 +537,6 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* Auth Modal */}
-      <AuthModal
-        open={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-        onSuccess={handleAuthSuccess}
-      />
       <Toaster />
     </div>
   );

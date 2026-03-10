@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import {
   Heart,
@@ -18,10 +19,10 @@ import { signOut } from "next-auth/react";
 interface HeaderProps {
   currentPath?: string;
   onAdminClick?: () => void;
-  onLoginClick?: () => void;
 }
 
-export function Header({ currentPath = "/", onAdminClick, onLoginClick }: HeaderProps) {
+export function Header({ currentPath = "/", onAdminClick }: HeaderProps) {
+  const router = useRouter();
   const { data: session } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isAdmin = session?.user?.role === "ADMIN";
@@ -60,9 +61,9 @@ export function Header({ currentPath = "/", onAdminClick, onLoginClick }: Header
 
   const handleLoginClick = () => {
     setMobileMenuOpen(false);
-    if (onLoginClick) {
-      onLoginClick();
-    }
+    // Redirect to login page with return URL
+    const returnUrl = encodeURIComponent(window.location.pathname);
+    router.push(`/login?returnUrl=${returnUrl}`);
   };
 
   const handleSignOut = async () => {

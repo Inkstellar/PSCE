@@ -20,12 +20,11 @@ import { Header } from "@/components/layout/Header";
 import { AuthModal } from "@/components/admin/AuthModal";
 
 export default function AboutPage() {
-  const [showAuthModal, setShowAuthModal] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Header */}
-      <Header currentPath="/about" onLoginClick={() => setShowAuthModal(true)} />
+      <Header currentPath="/about" />
 
       {/* Main Content */}
       <main className="flex-1">
