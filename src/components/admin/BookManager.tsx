@@ -50,6 +50,11 @@ interface Book {
   isbn: string | null;
   pages: number | null;
   language: string;
+  publisher: string | null;
+  characters: string | null;
+  rating: number;
+  reviewCount: number;
+  series: string | null;
   createdAt: string;
 }
 
@@ -64,6 +69,11 @@ interface BookFormData {
   isbn: string;
   pages: string;
   language: string;
+  publisher: string;
+  characters: string;
+  rating: string;
+  reviewCount: string;
+  series: string;
 }
 
 const initialFormData: BookFormData = {
@@ -77,6 +87,11 @@ const initialFormData: BookFormData = {
   isbn: "",
   pages: "",
   language: "English",
+  publisher: "",
+  characters: "",
+  rating: "0",
+  reviewCount: "0",
+  series: "",
 };
 
 export function BookManager() {
@@ -185,6 +200,11 @@ export function BookManager() {
       isbn: book.isbn || "",
       pages: book.pages?.toString() || "",
       language: book.language,
+      publisher: book.publisher || "",
+      characters: book.characters || "",
+      rating: book.rating?.toString() || "0",
+      reviewCount: book.reviewCount?.toString() || "0",
+      series: book.series || "",
     });
     setIsEditDialogOpen(true);
   };
@@ -301,6 +321,64 @@ export function BookManager() {
             value={formData.language}
             onChange={(e) => setFormData({ ...formData, language: e.target.value })}
             placeholder="English"
+            className="bg-background border-border"
+          />
+        </div>
+      </div>
+      <div className="grid gap-2">
+        <Label htmlFor="publisher">Publisher</Label>
+        <Input
+          id="publisher"
+          value={formData.publisher}
+          onChange={(e) => setFormData({ ...formData, publisher: e.target.value })}
+          placeholder="Publisher name"
+          className="bg-background border-border"
+        />
+      </div>
+      <div className="grid gap-2">
+        <Label htmlFor="series">Series</Label>
+        <Input
+          id="series"
+          value={formData.series}
+          onChange={(e) => setFormData({ ...formData, series: e.target.value })}
+          placeholder="Series name (if part of a series)"
+          className="bg-background border-border"
+        />
+      </div>
+      <div className="grid gap-2">
+        <Label htmlFor="characters">Characters (comma-separated)</Label>
+        <textarea
+          id="characters"
+          value={formData.characters}
+          onChange={(e) => setFormData({ ...formData, characters: e.target.value })}
+          placeholder="Batman, Superman, Wonder Woman"
+          className="flex min-h-[60px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        />
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="grid gap-2">
+          <Label htmlFor="rating">Rating (0-5)</Label>
+          <Input
+            id="rating"
+            type="number"
+            step="0.1"
+            min="0"
+            max="5"
+            value={formData.rating}
+            onChange={(e) => setFormData({ ...formData, rating: e.target.value })}
+            placeholder="0"
+            className="bg-background border-border"
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="reviewCount">Review Count</Label>
+          <Input
+            id="reviewCount"
+            type="number"
+            min="0"
+            value={formData.reviewCount}
+            onChange={(e) => setFormData({ ...formData, reviewCount: e.target.value })}
+            placeholder="0"
             className="bg-background border-border"
           />
         </div>

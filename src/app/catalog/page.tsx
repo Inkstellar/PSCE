@@ -305,118 +305,128 @@ function CatalogContent() {
           ) : viewMode === "grid" ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {books.map((book) => (
-                <Card
-                  key={book.id}
-                  className="group bg-card border-border overflow-hidden hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10"
-                >
-                  <div className="relative h-48 overflow-hidden">
-                    <Image
-                      src={book.coverImage || "/images/banner1.png"}
-                      alt={book.name}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-60" />
-                    {book.stock < 5 && book.stock > 0 && (
-                      <Badge className="absolute top-3 left-3 bg-amber-500/90 text-amber-foreground">
-                        Low Stock
-                      </Badge>
-                    )}
-                    {book.stock === 0 && (
-                      <Badge className="absolute top-3 left-3 bg-destructive text-destructive-foreground">
-                        Out of Stock
-                      </Badge>
-                    )}
-                    <WishlistButton
-                      bookId={book.id}
-                      bookName={book.name}
-                      variant="icon"
-                      className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity"
-                    />
-                  </div>
-
-                  <CardContent className="p-4">
-                    <h3 className="font-bold text-foreground text-lg mb-1 line-clamp-1 group-hover:text-purple-light transition-colors">
-                      {book.name}
-                    </h3>
-
-                    <div className="flex items-center gap-1.5 text-muted-foreground text-sm mb-2">
-                      <User className="h-3.5 w-3.5" />
-                      <span className="line-clamp-1">{book.author}</span>
-                    </div>
-
-                    <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                      {book.description}
-                    </p>
-
-                    <div className="flex items-center justify-between pt-3 border-t border-border">
-                      <div className="flex items-center gap-1 text-primary font-bold">
-                        <IndianRupee className="h-4 w-4" />
-                        <span>{book.price.toLocaleString()}</span>
-                      </div>
-                      <WishlistButton
-                        bookId={book.id}
-                        bookName={book.name}
-                        variant="ghost"
+                <Link key={book.id} href={`/book/${book.id}`}>
+                  <Card
+                    className="group bg-card border-border overflow-hidden hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10"
+                  >
+                    <div className="relative h-48 overflow-hidden">
+                      <Image
+                        src={book.coverImage || "/images/banner1.png"}
+                        alt={book.name}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-60" />
+                      {book.stock < 5 && book.stock > 0 && (
+                        <Badge className="absolute top-3 left-3 bg-amber-500/90 text-amber-foreground">
+                          Low Stock
+                        </Badge>
+                      )}
+                      {book.stock === 0 && (
+                        <Badge className="absolute top-3 left-3 bg-destructive text-destructive-foreground">
+                          Out of Stock
+                        </Badge>
+                      )}
+                      <div
+                        onClick={(e) => e.preventDefault()}
+                        className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <WishlistButton
+                          bookId={book.id}
+                          bookName={book.name}
+                          variant="icon"
+                        />
+                      </div>
                     </div>
-                  </CardContent>
-                </Card>
+
+                    <CardContent className="p-4">
+                      <h3 className="font-bold text-foreground text-lg mb-1 line-clamp-1 group-hover:text-purple-light transition-colors">
+                        {book.name}
+                      </h3>
+
+                      <div className="flex items-center gap-1.5 text-muted-foreground text-sm mb-2">
+                        <User className="h-3.5 w-3.5" />
+                        <span className="line-clamp-1">{book.author}</span>
+                      </div>
+
+                      <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                        {book.description}
+                      </p>
+
+                      <div className="flex items-center justify-between pt-3 border-t border-border">
+                        <div className="flex items-center gap-1 text-primary font-bold">
+                          <IndianRupee className="h-4 w-4" />
+                          <span>{book.price.toLocaleString()}</span>
+                        </div>
+                        <div onClick={(e) => e.preventDefault()}>
+                          <WishlistButton
+                            bookId={book.id}
+                            bookName={book.name}
+                            variant="ghost"
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
               ))}
             </div>
           ) : (
             <div className="space-y-4">
               {books.map((book) => (
-                <Card
-                  key={book.id}
-                  className="group bg-card border-border overflow-hidden hover:border-primary/50 transition-all duration-300"
-                >
-                  <div className="flex">
-                    <div className="relative w-32 h-32 flex-shrink-0">
-                      <Image
-                        src={book.coverImage || "/images/banner1.png"}
-                        alt={book.name}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <CardContent className="flex-1 p-4">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className="font-bold text-foreground text-lg group-hover:text-purple-light transition-colors">
-                            {book.name}
-                          </h3>
-                          <p className="text-muted-foreground text-sm">{book.author}</p>
-                        </div>
-                        <div className="flex items-center gap-1 text-primary font-bold text-lg">
-                          <IndianRupee className="h-5 w-5" />
-                          <span>{book.price.toLocaleString()}</span>
-                        </div>
-                      </div>
-                      <p className="text-muted-foreground text-sm mt-2 line-clamp-2">
-                        {book.description}
-                      </p>
-                      <div className="flex items-center gap-4 mt-3">
-                        <span className="text-xs text-muted-foreground flex items-center gap-1">
-                          <Calendar className="h-3 w-3" />
-                          {format(new Date(book.publishedAt), "MMM d, yyyy")}
-                        </span>
-                        {book.stock < 5 && book.stock > 0 && (
-                          <Badge className="bg-amber-500/10 text-amber-500 border-amber-500/20">
-                            {book.stock} left
-                          </Badge>
-                        )}
-                        <WishlistButton
-                          bookId={book.id}
-                          bookName={book.name}
-                          variant="button"
-                          className="ml-auto"
-                          showText
+                <Link key={book.id} href={`/book/${book.id}`}>
+                  <Card
+                    className="group bg-card border-border overflow-hidden hover:border-primary/50 transition-all duration-300"
+                  >
+                    <div className="flex">
+                      <div className="relative w-32 h-32 flex-shrink-0">
+                        <Image
+                          src={book.coverImage || "/images/banner1.png"}
+                          alt={book.name}
+                          fill
+                          className="object-cover"
                         />
                       </div>
-                    </CardContent>
-                  </div>
-                </Card>
+                      <CardContent className="flex-1 p-4">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <h3 className="font-bold text-foreground text-lg group-hover:text-purple-light transition-colors">
+                              {book.name}
+                            </h3>
+                            <p className="text-muted-foreground text-sm">{book.author}</p>
+                          </div>
+                          <div className="flex items-center gap-1 text-primary font-bold text-lg">
+                            <IndianRupee className="h-5 w-5" />
+                            <span>{book.price.toLocaleString()}</span>
+                          </div>
+                        </div>
+                        <p className="text-muted-foreground text-sm mt-2 line-clamp-2">
+                          {book.description}
+                        </p>
+                        <div className="flex items-center gap-4 mt-3">
+                          <span className="text-xs text-muted-foreground flex items-center gap-1">
+                            <Calendar className="h-3 w-3" />
+                            {format(new Date(book.publishedAt), "MMM d, yyyy")}
+                          </span>
+                          {book.stock < 5 && book.stock > 0 && (
+                            <Badge className="bg-amber-500/10 text-amber-500 border-amber-500/20">
+                              {book.stock} left
+                            </Badge>
+                          )}
+                          <div onClick={(e) => e.preventDefault()}>
+                            <WishlistButton
+                              bookId={book.id}
+                              bookName={book.name}
+                              variant="button"
+                              className="ml-auto"
+                              showText
+                            />
+                          </div>
+                        </div>
+                      </CardContent>
+                    </div>
+                  </Card>
+                </Link>
               ))}
             </div>
           )}

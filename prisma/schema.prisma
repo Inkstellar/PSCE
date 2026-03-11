@@ -67,6 +67,11 @@ model Book {
   isbn         String?
   pages        Int?
   language     String       @default("English")
+  publisher    String?
+  characters   String?      // Stored as JSON array string
+  rating       Float        @default(0)
+  reviewCount  Int          @default(0)
+  series       String?
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
   wishlist     Wishlist[]

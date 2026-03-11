@@ -385,61 +385,68 @@ export default function Home() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {books.map((book) => (
-                <Card
-                  key={book.id}
-                  className="group bg-card border-border overflow-hidden hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10"
-                >
-                  {/* Book Cover */}
-                  <div className="relative h-48 overflow-hidden">
-                    <Image
-                      src={book.coverImage || "/images/banner1.png"}
-                      alt={book.name}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-60" />
-                    <Badge className="absolute top-3 right-3 bg-primary text-primary-foreground">
-                      New
-                    </Badge>
-                    <WishlistButton
-                      bookId={book.id}
-                      bookName={book.name}
-                      variant="icon"
-                      className="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity"
-                    />
-                  </div>
-
-                  <CardContent className="p-4">
-                    {/* Title */}
-                    <h3 className="font-bold text-foreground text-lg mb-1 line-clamp-1 group-hover:text-purple-light transition-colors">
-                      {book.name}
-                    </h3>
-
-                    {/* Author */}
-                    <div className="flex items-center gap-1.5 text-muted-foreground text-sm mb-2">
-                      <User className="h-3.5 w-3.5" />
-                      <span className="line-clamp-1">{book.author}</span>
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                      {book.description}
-                    </p>
-
-                    {/* Footer */}
-                    <div className="flex items-center justify-between pt-3 border-t border-border">
-                      <div className="flex items-center gap-1 text-primary font-bold">
-                        <IndianRupee className="h-4 w-4" />
-                        <span>{book.price.toLocaleString()}</span>
-                      </div>
-                      <WishlistButton
-                        bookId={book.id}
-                        bookName={book.name}
-                        variant="ghost"
+                <Link key={book.id} href={`/book/${book.id}`}>
+                  <Card
+                    className="group bg-card border-border overflow-hidden hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10"
+                  >
+                    {/* Book Cover */}
+                    <div className="relative h-48 overflow-hidden">
+                      <Image
+                        src={book.coverImage || "/images/banner1.png"}
+                        alt={book.name}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-60" />
+                      <Badge className="absolute top-3 right-3 bg-primary text-primary-foreground">
+                        New
+                      </Badge>
+                      <div
+                        onClick={(e) => e.preventDefault()}
+                        className="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <WishlistButton
+                          bookId={book.id}
+                          bookName={book.name}
+                          variant="icon"
+                        />
+                      </div>
                     </div>
-                  </CardContent>
-                </Card>
+
+                    <CardContent className="p-4">
+                      {/* Title */}
+                      <h3 className="font-bold text-foreground text-lg mb-1 line-clamp-1 group-hover:text-purple-light transition-colors">
+                        {book.name}
+                      </h3>
+
+                      {/* Author */}
+                      <div className="flex items-center gap-1.5 text-muted-foreground text-sm mb-2">
+                        <User className="h-3.5 w-3.5" />
+                        <span className="line-clamp-1">{book.author}</span>
+                      </div>
+
+                      {/* Description */}
+                      <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                        {book.description}
+                      </p>
+
+                      {/* Footer */}
+                      <div className="flex items-center justify-between pt-3 border-t border-border">
+                        <div className="flex items-center gap-1 text-primary font-bold">
+                          <IndianRupee className="h-4 w-4" />
+                          <span>{book.price.toLocaleString()}</span>
+                        </div>
+                        <div onClick={(e) => e.preventDefault()}>
+                          <WishlistButton
+                            bookId={book.id}
+                            bookName={book.name}
+                            variant="ghost"
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
               ))}
             </div>
           )}

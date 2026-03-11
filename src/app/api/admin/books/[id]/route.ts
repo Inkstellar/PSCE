@@ -48,6 +48,11 @@ export async function PUT(
         isbn: data.isbn || null,
         pages: data.pages ? parseInt(data.pages) : null,
         language: data.language || "English",
+        publisher: data.publisher || null,
+        characters: data.characters || null,
+        rating: data.rating ? parseFloat(data.rating) : 0,
+        reviewCount: data.reviewCount ? parseInt(data.reviewCount) : 0,
+        series: data.series || null,
       },
     });
 
